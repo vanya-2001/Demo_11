@@ -18,5 +18,3 @@ while work:
         print('Вы продолжили движение прямо: ', choice)
 else:
     print('До свидания!')
-
-
