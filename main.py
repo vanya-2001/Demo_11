@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/index')
 def index():
     param = {}
-    param['content'] = 'Этот текст отобразится на главной странице'
+    param['text'] = 'Этот текст отобразится на главной странице'
     param['title'] = 'Главная'
     return render_template('index.html', **param)
     # return """
@@ -25,6 +25,19 @@ def news():
     return render_template('news.html', news=news_list, title='Новости')
 
 
+@app.route('/pets')
+def pets():
+    with open('pets.json', 'rt', encoding='utf-8') as f:
+        pets_info = json.load(f)
+    print(pets_info)
+    return render_template('pets.html', pets=pets_info, title='Питомцы')
+
+
+@app.route('/queue')
+def queue():
+    return render_template('queue.html', title='Очередь на медосмотр')
+
+
 @app.route('/odd_even/', defaults={'num': 0})
 @app.route('/odd_even/<int:num>')
 def odd_even(num):
@@ -38,14 +51,20 @@ def countdown():
     cl.append('Финиш')
     return '<br>'.join(cl)
 
-
+# 1. Добавить требуемый пункт в меню
+# 2. Создать .html-файл для расширения шаблона
+# 3. Отрендерить, создав соответствующий декоратор
 @app.route('/contacts')
 def contacts():
-    return """
-    <b>E-mail: </b>a@b.ru<br>
-    <b>Address: </b>St.Petersburg<br>
-    <a href='/'>На главную</a>
-    """
+    return render_template('contacts.html', title='Наши контакты')
+
+
+@app.route('/about')
+def about():
+    params = {}
+    params['title'] = 'О нас'
+    params['text'] = 'Мы перспективная и динамично развивающаяся компания...'
+    return render_template('about.html', **params)
 
 
 # Статический контент (в папке static/...)
