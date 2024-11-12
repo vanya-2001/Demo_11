@@ -1,6 +1,7 @@
-from flask import Flask, url_for, request, render_template, redirect
+from flask import Flask, url_for, request, render_template
+from flask import flash, redirect
 from loginform import LoginForm
-# from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import json, os
 
 current_directory = os.path.dirname(__file__)  # путь к корню сервера
@@ -37,6 +38,14 @@ def news():
     return render_template('news.html', news=news_list, title='Новости')
 
 
+@app.route('/weather', methods=['GET', 'POST'])
+def weather():
+    if request.method == 'GET':
+        return 'Форма с городом'
+    elif request.method == 'POST':
+        return 'Обращение к API openweathermap'
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -50,7 +59,21 @@ def upload_file():
     if request.method == 'GET':
         return render_template('upload.html', title='Выбор файла', form=None)
     elif request.method == 'POST':
-        pass
+        if 'file' not in request.files:
+            flash('Файл не был прочитан')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('Файл не был отправлен')
+            return redirect(request.url)
+        if not allowed_file(file.filename):
+            flash('Загрузка файлов данного типа запрещена!')
+            return redirect(request.url)
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return render_template('upload.html', title='Файл загружен',
+                                   form=True)
 
 
 @app.route('/success')
