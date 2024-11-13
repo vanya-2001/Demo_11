@@ -1,6 +1,10 @@
 from flask import Flask, url_for, request, render_template
 from flask import flash, redirect
 from loginform import LoginForm
+from mail_sender import send_mail
+from mailform import MailForm
+import configparser
+import requests
 from werkzeug.utils import secure_filename
 import json, os
 
@@ -11,6 +15,8 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'too_short_key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+config = configparser.ConfigParser()  # объект для обращения к ini
 
 
 def allowed_file(filename):
@@ -41,9 +47,34 @@ def news():
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
     if request.method == 'GET':
-        return 'Форма с городом'
+        return render_template('weather.html', title='Погода', form=None)
     elif request.method == 'POST':
-        return 'Обращение к API openweathermap'
+        # читаем
+        config.read('settings.ini')
+        city = request.form['city']
+        if len(city) < 2:
+            flash('Город не введен или введён не полностью')
+            return redirect(request.url)
+        key = config['Weather']['key']
+
+        res = requests.get('http://api.openweathermap.org/data/2.5/find',
+                           params={'q': city,
+                                   'type': 'like',
+                                   'units': 'metric',
+                                   'APPID': key})
+        data = res.json()
+
+        temp = data['list'][0]['main']
+
+        params = {}  # пустой словарь для передачи параметров в render weather.html
+        params['temper'] = temp['temp']
+        params['feel'] = temp['feels_like']
+        params['press'] = temp['pressure']
+        params['humid'] = temp['humidity']
+
+        return render_template('weather.html',
+                               title=f'Погода в городе {city}',
+                               form=request.form, params=params)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -52,6 +83,17 @@ def login():
     if form.validate_on_submit():
         return redirect('/success')
     return render_template('login.html', title='Авторизация', form=form)
+
+
+# 1. Добавить требуемый пункт в меню
+# 2. Создать .html-файл для расширения шаблона
+# 3. Отрендерить, создав соответствующий декоратор
+@app.route('/contacts', methods=['GET', 'POST'])
+def contacts():
+    form = MailForm()
+    if form.validate_on_submit():
+        return redirect('/success')
+    return render_template('contacts.html', title='Наши контакты', form=form)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -106,14 +148,6 @@ def countdown():
     cl += [str(x) for x in reversed(range(11))]
     cl.append('Финиш')
     return '<br>'.join(cl)
-
-
-# 1. Добавить требуемый пункт в меню
-# 2. Создать .html-файл для расширения шаблона
-# 3. Отрендерить, создав соответствующий декоратор
-@app.route('/contacts')
-def contacts():
-    return render_template('contacts.html', title='Наши контакты')
 
 
 @app.route('/about')
