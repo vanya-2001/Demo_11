@@ -63,7 +63,9 @@ def weather():
                                    'units': 'metric',
                                    'APPID': key})
         data = res.json()
-
+        if len(data['list']) == 0:
+            flash('Город введён неверно!')
+            return redirect(request.url)
         temp = data['list'][0]['main']
 
         params = {}  # пустой словарь для передачи параметров в render weather.html
@@ -91,8 +93,41 @@ def login():
 @app.route('/contacts', methods=['GET', 'POST'])
 def contacts():
     form = MailForm()
+    params = {}
     if form.validate_on_submit():
-        return redirect('/success')
+        name = form.username.data  # получили имя с формы
+        params['name'] = name  # добавили ключ и значение к словарю params
+        phone = form.phone.data
+        params['phone'] = phone
+        email = form.email.data
+        params['email'] = email
+        message = form.message.data
+        params['message'] = message
+        params['page'] = request.url
+
+        text = f"""
+        Пользователь {name} оставил Вам сообщение:
+        {message}
+        Его телефон: {phone},
+        E-mail: {email},
+        Cтраница: {request.url}.
+        """
+        text_to_user = f"""
+        Уважаемый (ая) {name}!
+        Ваши данные:
+        Телефон: {phone},
+        E-mail: {email},
+        успешно получены.
+        Ваше сообщение:
+        {message}
+        принято рассмотрению.
+        Отправлено со страницы: {request.url}.
+        """
+        # send_mail(email, 'Ваши данные на сайте', text_to_user)
+        # send_mail('mrharut@yandex.ru', 'Запрос с сайта', text)
+        return render_template('mailresult.html',
+                               title='Ваши данные',
+                               params=params)
     return render_template('contacts.html', title='Наши контакты', form=form)
 
 
