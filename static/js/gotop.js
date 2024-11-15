@@ -25,7 +25,7 @@ function goTop() {
     // если смещение есть (окно прокручено) 
     if(window.scrollY > 0) {
         // в этом случае "едем" наверх
-        window.scrollBy(0, scrollStep); // прокручиваем на заданную величину
+        window.scrollTo(0, scrollStep, behavior="smooth"); // прокручиваем на заданную величину
         // рекурсивный вызов
         setTimeout(goTop, 0);
     }
