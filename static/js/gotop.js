@@ -1,7 +1,5 @@
 // получаем доступ к элементу кнопки "наверх"
 const goTopBtn = document.querySelector("#go-top");
-// значение однократной прокрутки в пикселях
-const scrollStep = -150;
 
 // обработчик события прокрутки окна
 window.addEventListener("scroll", trackScroll);
