@@ -1,12 +1,18 @@
+import configparser
+import datetime
+import json
+import os
+from data import db_session
+from data.users import User
+from data.news import News
+
+import requests
 from flask import Flask, url_for, request, render_template
 from flask import flash, redirect
-from loginform import LoginForm
-from mail_sender import send_mail
-from mailform import MailForm
-import configparser
-import requests
 from werkzeug.utils import secure_filename
-import json, os
+
+from loginform import LoginForm
+from mailform import MailForm
 
 current_directory = os.path.dirname(__file__)  # путь к корню сервера
 UPLOAD_FOLDER = f'{current_directory}/static/uploads'
@@ -251,5 +257,44 @@ def form_sample():
         return render_template('form_sample.html', title='Ваши данные', form=request.form)
 
 
+# res = cur.execute("""select * from users
+#                   where id > 1 and email not like(%1%)""")
+# res.fetchall()
+
 if __name__ == '__main__':
-    app.run(port=5000, host='127.0.0.1')
+    db_session.global_init('db/blogs.db')
+    db_sess = db_session.create_session()
+    # CRUD
+    # Create News
+    # news = News(title="Первая новость", content="Первая новость",
+    #             user_id=1, is_private=False)
+    # db_sess.add(news)
+    # db_sess.commit()
+    # Read News
+    # news = db_sess.query(News).filter(News.user_id == 1).first()
+    # print(news.title)
+    # Create user
+    # user = User()
+    # user.name = 'User3'
+    # user.about = 'Третий пользователь нашей БД'
+    # user.email = 'email3@email.ru'
+    # db_sess = db_session.create_session()
+    # db_sess.add(user)
+    # db_sess.commit()
+    # Read user
+    # result = db_sess.query(User).first() # только первая запись из запроса
+    # result = db_sess.query(User).all()  # select * from users
+    # result = db_sess.query(User).filter(User.id == 1,
+    #                                     User.email.notlike("%2%"))
+    # Update user
+    # result = db_sess.query(User).filter(User.id == 2).first()
+    # result.name = 'User22'
+    # result.created_date = datetime.datetime.now()
+    # db_sess.commit()
+    # print(result.email)
+    # for user in result:
+    #     print(user.name, user.email)
+    # Delete user
+    # db_sess.query(User).filter(User.id == 2).delete()
+    # db_sess.commit()
+    # app.run(port=5000, host='127.0.0.1')
