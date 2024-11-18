@@ -87,14 +87,14 @@ pip freeze > requirements.txt
 pip install -r requirements.txt
 
 ### ORM Filter (Операция - Фильтр)
-*EQUALS	query(User).filter(User.name == 'User')
-*NOT EQUAL	query(User).filter(User.name != 'User')
-*LIKE	query(User).filter(User.name.like('%User%'))
-*NOT LIKE	query(User).filter(User.name.notlike('%User%'))
-*IN	query(User).filter(User.name.in_(['User1', 'User2', 'User3']))
-*NOT IN	query(User).filter(User.name.notin_(['User1', 'User2', 'User3'])) или
+ -EQUALS - query(User).filter(User.name == 'User')
+-NOT EQUAL - query(User).filter(User.name != 'User')
+-LIKE - query(User).filter(User.name.like('%User%'))
+-NOT LIKE - query(User).filter(User.name.notlike('%User%'))
+-IN - query(User).filter(User.name.in_(['User1', 'User2', 'User3']))
+-NOT - IN	query(User).filter(User.name.notin_(['User1', 'User2', 'User3'])) или
 query(User).filter(~User.name.in_(['User1', 'User2', 'User3']))
-*NULL	query(User).filter(User.name == None)
-*AND	query(User).filter(User.name == 'User', User.id > 3) или query(User).filter(User.name == 'User').filter(User.id > 3)
+-NULL - query(User).filter(User.name == None)
+AND	query(User).filter(User.name == 'User', User.id > 3) или query(User).filter(User.name == 'User').filter(User.id > 3)
 *OR	query(User).filter((User.name == 'User') | (User.id > 3)) или
 query(User).filter(or_(User.name == 'User', User.id > 3))
