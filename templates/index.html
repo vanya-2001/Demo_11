@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Привет</h1>
 <p>{{ text }}</p>
+{% if current_user.is_authenticated %}
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam architecto, consequuntur deserunt, dicta doloribus
     earum exercitationem fugiat id in iste magnam, non porro provident reiciendis saepe. Alias asperiores assumenda
     atque consequatur consequuntur cupiditate debitis, deserunt dicta dolor eius est hic illum magnam numquam pariatur
@@ -137,6 +138,9 @@
     quidem rem. Dolorem esse obcaecati quia quo? A consequuntur delectus deserunt dignissimos dolore dolorem earum ex
     expedita facere facilis, impedit in incidunt minima minus nisi nulla numquam odio odit officiis omnis perspiciatis
     possimus quibusdam quis recusandae sed, similique, tempora ullam veritatis vero?</p>
+    {% else %}
+    <p>Этот контент виден только зарегистрированным пользователям</p>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}
