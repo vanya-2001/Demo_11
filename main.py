@@ -238,7 +238,7 @@ def edit_news(id):
             form.title.data = news.title
             form.content.data = news.content
             form.is_private.data = news.is_private
-            form.submit.data = 'Отредактировать'
+            form.submit.label.text = 'Отредактировать'  # заменяем надпись на кнопке
         else:
             abort(404)
 
