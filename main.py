@@ -1,3 +1,4 @@
+# Монолитная архитектура (Monolithic Style)
 import configparser
 import datetime
 import json
@@ -7,9 +8,10 @@ from data.users import User
 from data.news import News
 from forms.user import RegisterForm
 from forms.add_news import NewsForm
+import news_api
 
 import requests
-from flask import Flask, url_for, request, render_template, abort
+from flask import Flask, url_for, request, render_template, abort, jsonify
 from flask import flash, redirect, make_response, session
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_login import current_user
@@ -22,7 +24,7 @@ current_directory = os.path.dirname(__file__)  # путь к корню серв
 UPLOAD_FOLDER = f'{current_directory}/static/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-app = Flask(__name__)
+app = Flask(__name__)  # , template_folder='my_tmp'
 login_manager = LoginManager()
 login_manager.init_app(app)  # привязали менеджер авторизации к приложению
 
@@ -45,11 +47,23 @@ def http_401_handler(error):
     return render_template('error401.html', title='Требуется аутентификация')
 
 
+# обработка ошибки сервера 400
+# Пользователь не авторизован
+# для просмотра данной страницы
+@app.errorhandler(400)
+def http_400_handler(_):
+    return make_response(jsonify({'error': 'Новость не найдена'}), 400)
+
+
 # обработка ошибки сервера 404
 # Страница не найдена
 @app.errorhandler(404)
 def http_404_handler(error):
-    return render_template('error404.html', title='Контент не найден')
+    return make_response(jsonify({'error': 'Новость не найдена'}), 404)
+
+
+# def http_404_handler(error):
+#     return render_template('error404.html', title='Контент не найден')
 
 
 @app.route('/')
@@ -75,6 +89,7 @@ def user_loader(user_id):
 def session_test():
     visit_count = session.get('visit_count', 0)
     session['visit_count'] = visit_count + 1
+    # visit_count % 3 - 0, 1, 2
     # session.pop('visit_count', None) # если надо программно уничтожить сессию
     return make_response(f'Вы посетили данную страницу {visit_count} раз.')
 
@@ -135,6 +150,13 @@ def weather():
                                form=request.form, params=params)
 
 
+# тестируем наш Api
+@app.route('/apitest')
+def api_test():
+    res = requests.get('http://127.0.0.1:5000/api/news').json()
+    return render_template('apitest.html', title='Тестируем наш первый API', news=res['news'])
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -183,6 +205,7 @@ def logout():
     logout_user()
     return redirect('/')
 
+
 # добавление новости
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
@@ -200,6 +223,7 @@ def add_news():
         return redirect('/blog')
     return render_template('add_news.html', title='Добавление новости',
                            form=form)
+
 
 # редактирование новости
 @app.route('/blog/<int:id>', methods=['GET', 'POST'])
@@ -233,6 +257,7 @@ def edit_news(id):
     return render_template('add_news.html', title='Редактирование новости',
                            form=form)
 
+
 # удаление новости
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -246,6 +271,7 @@ def news_delete(id):
     else:
         abort(404)
     return redirect('/blog')
+
 
 # 1. Добавить требуемый пункт в меню
 # 2. Создать .html-файл для расширения шаблона
@@ -356,6 +382,7 @@ def about():
 
 @app.route('/blog')
 def blog():
+    # if current_user.is_admin():
     db_sess = db_session.create_session()
     news = db_sess.query(News).filter(News.is_private == False)
     return render_template('blog.html', title='Новости', news=news)
@@ -425,4 +452,6 @@ def form_sample():
 
 if __name__ == '__main__':
     db_session.global_init('db/blogs.db')
+    # прописываем blueprint в основное приложение
+    app.register_blueprint(news_api.blueprint)
     app.run(port=5000, host='127.0.0.1')

@@ -2,6 +2,7 @@
 import datetime
 import sqlalchemy
 from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import orm
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -14,7 +15,7 @@ ACCESS = {
 }
 
 
-class User(SqlAlchemyBase, UserMixin):
+class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True,
@@ -23,6 +24,7 @@ class User(SqlAlchemyBase, UserMixin):
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True,
                               unique=True, nullable=True)
+    # level = sqlalchemy.Column(sqlalchemy.Integer, default=1)
     hashed_password = sqlalchemy.Column(sqlalchemy.String,
                                         nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
@@ -42,4 +44,15 @@ class User(SqlAlchemyBase, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
 
+    def get_id(self):
+        return self.id
 
+    """
+    # Является ли текущий пользователь админом
+    def is_admin(self):
+        return self.level == ACCESS['admin']
+        
+    # Разрешён ли доступ пользователья с текущим уровнем
+    def allowed(self, access_level):
+        return self.level >= access_level
+    """

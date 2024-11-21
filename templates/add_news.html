@@ -21,7 +21,7 @@
         {% endfor %}
     </p>
     <p>{{ form.is_private() }} {{ form.is_private.label }}</p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary", onclick="return confirm('Подтвердите действие с записью');") }}</p>
 </form>
 {% endblock %}
 
