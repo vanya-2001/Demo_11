@@ -7,7 +7,7 @@
 # /news (POST) - создание новой новости
 # /news/2 (PUT) - изменение новости №2
 # /news/2 (DELETE) - удаляю новость №2
-# RESTful- приложение
+# RESTful- микросервис
 # http://127.0.0.1:5000/api/news
 
 import flask
@@ -66,3 +66,15 @@ def get_one_news(news_id):
             }
         )
     return make_response(jsonify({'error': 'Новость не найдена'}), 404)
+
+
+# Удаление новости
+@blueprint.route('/api/news/<int:news_id>', methods=['DELETE'])
+def delete_news(news_id):
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).get(news_id)
+    if not news:
+        return make_response(jsonify({'error': 'Новость не найдена'}), 404)
+    db_sess.delete(news)
+    db_sess.commit()
+    return jsonify({'success': f'Новость {news_id} удалена'})

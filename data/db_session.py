@@ -1,5 +1,20 @@
 # ORM - Object Relational Mapping - объектно-реляционное отображение
 # pip install sqlalchemy
+"""
+Для отслеживания состояний структуры таблиц БД нам потребуется
+pip install alembic
+После надо в терминале запустить: alembic init alembic
+Далее зайти в созданную директорию alembic, найти файл env.py
+Изменения смотрим в ветке webApp13 (/alembic/env.py)
+Конфигурируем alembic.ini (см. файл alembic.ini в корне)
+Вносим нужные изменения в нашу таблицу БД (в частности столе)
+В терминале пишем команду:
+alembic revision --autogenerate -m "Добавили столбец в таблицу users"
+Чтобы подтвердить добавление используем команду:
+alembic upgrade head
+Если нужно откатиться до предыдущей версии таблии БД, то:
+alembic downgrade head
+"""
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session

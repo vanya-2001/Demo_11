@@ -3,16 +3,19 @@ import configparser
 import datetime
 import json
 import os
+
 from data import db_session
 from data.users import User
 from data.news import News
 from forms.user import RegisterForm
 from forms.add_news import NewsForm
 import news_api
+import our_resources
 
 import requests
 from flask import Flask, url_for, request, render_template, abort, jsonify
 from flask import flash, redirect, make_response, session
+from flask_restful import Api
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_login import current_user
 from werkzeug.utils import secure_filename
@@ -20,11 +23,14 @@ from werkzeug.utils import secure_filename
 from forms.loginform import LoginForm
 from mailform import MailForm
 
+MS1 = 'http://127.0.0.1:5000/api/v2/news'
+
 current_directory = os.path.dirname(__file__)  # путь к корню сервера
 UPLOAD_FOLDER = f'{current_directory}/static/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)  # , template_folder='my_tmp'
+api = Api(app)  # регистрация нашего микросервиса
 login_manager = LoginManager()
 login_manager.init_app(app)  # привязали менеджер авторизации к приложению
 
@@ -82,7 +88,7 @@ def index():
 @login_manager.user_loader
 def user_loader(user_id):
     db_sess = db_session.create_session()
-    return db_sess.query(User).get(user_id)
+    return db_sess.get(User, user_id)
 
 
 @app.route('/session_test')
@@ -153,7 +159,7 @@ def weather():
 # тестируем наш Api
 @app.route('/apitest')
 def api_test():
-    res = requests.get('http://127.0.0.1:5000/api/news').json()
+    res = requests.get(MS1).json()
     return render_template('apitest.html', title='Тестируем наш первый API', news=res['news'])
 
 
@@ -454,4 +460,8 @@ if __name__ == '__main__':
     db_session.global_init('db/blogs.db')
     # прописываем blueprint в основное приложение
     app.register_blueprint(news_api.blueprint)
+    # прописываем доступ к отдельной новости по RESTful API v2
+    api.add_resource(our_resources.NewsResource, '/api/v2/news/<int:news_id>')
+    # прописываем доступ к ко всем новостям по RESTful API v2
+    api.add_resource(our_resources.NewsResourceList, '/api/v2/news')
     app.run(port=5000, host='127.0.0.1')

@@ -11,7 +11,8 @@ from .db_session import SqlAlchemyBase
 # роль пользователя
 ACCESS = {
     'user': 1,
-    'admin': 2
+    'moderator': 2,
+    'admin': 3
 }
 
 
@@ -24,7 +25,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True,
                               unique=True, nullable=True)
-    # level = sqlalchemy.Column(sqlalchemy.Integer, default=1)
+    level = sqlalchemy.Column(sqlalchemy.Integer, default=1)
     hashed_password = sqlalchemy.Column(sqlalchemy.String,
                                         nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
@@ -47,12 +48,10 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     def get_id(self):
         return self.id
 
-    """
     # Является ли текущий пользователь админом
     def is_admin(self):
         return self.level == ACCESS['admin']
-        
-    # Разрешён ли доступ пользователья с текущим уровнем
+
+    # Разрешён ли доступ пользователя с текущим уровнем
     def allowed(self, access_level):
         return self.level >= access_level
-    """
