@@ -5,12 +5,12 @@ import json
 import os
 
 from data import db_session
+from data.sess_admin import Sess
 from data.users import User
 from data.news import News
 from forms.user import RegisterForm
 from forms.add_news import NewsForm
-import news_api
-import our_resources
+from api_folder import news_api, our_resources, user_resources
 
 import requests
 from flask import Flask, url_for, request, render_template, abort, jsonify
@@ -54,11 +54,9 @@ def http_401_handler(error):
 
 
 # обработка ошибки сервера 400
-# Пользователь не авторизован
-# для просмотра данной страницы
 @app.errorhandler(400)
 def http_400_handler(_):
-    return make_response(jsonify({'error': 'Новость не найдена'}), 400)
+    return make_response(jsonify({'error': 'Ошибка 400'}), 400)
 
 
 # обработка ошибки сервера 404
@@ -70,6 +68,11 @@ def http_404_handler(error):
 
 # def http_404_handler(error):
 #     return render_template('error404.html', title='Контент не найден')
+
+@login_manager.user_loader
+def user_loader(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.get(User, user_id)
 
 
 @app.route('/')
@@ -85,10 +88,32 @@ def index():
     # """
 
 
-@login_manager.user_loader
-def user_loader(user_id):
-    db_sess = db_session.create_session()
-    return db_sess.get(User, user_id)
+@app.route('/admin')
+@login_required
+def admin():
+    return render_template('admin/index.html', title="Панель администрирования")
+
+
+@app.route('/adminuser')
+@login_required
+def users():
+    users = requests.get('http://127.0.0.1:5000/api/v2/users').json()
+    if users.get('error', None) or users.get('message', None):
+        return redirect('/')
+    return render_template('admin/users.html', title="Пользователи сайта",
+                           users=users['users'])
+
+
+@app.route('/admin/user_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def user_delete(id):
+    if not current_user.is_admin():
+        return redirect('/')
+    res = requests.delete(f'http://127.0.0.1:5000/api/v2/user/{id}').json()
+    temp = res.get('error', None)
+    if temp:
+        return render_template('admin/users.html', title=temp)
+    return redirect('/adminuser')
 
 
 @app.route('/session_test')
@@ -198,6 +223,13 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
+            if user.is_admin():
+                sess_make = Sess(
+                    title='admin',
+                    content='super_long_admin_key'
+                )
+                db_sess.add(sess_make)
+                db_sess.commit()
             return redirect('/')  # request.url, либо на нужную страницу
         return render_template('login.html', title='Ошибка авторизации',
                                message='Неправильная пара: логин - пароль!',
@@ -209,6 +241,11 @@ def login():
 @login_required
 def logout():
     logout_user()
+    db_sess = db_session.create_session()
+    sess = db_sess.query(Sess).filter(Sess.title == 'admin').first()
+    if sess:
+        db_sess.delete(sess)
+        db_sess.commit()
     return redirect('/')
 
 
@@ -462,6 +499,10 @@ if __name__ == '__main__':
     app.register_blueprint(news_api.blueprint)
     # прописываем доступ к отдельной новости по RESTful API v2
     api.add_resource(our_resources.NewsResource, '/api/v2/news/<int:news_id>')
-    # прописываем доступ к ко всем новостям по RESTful API v2
+    # прописываем доступ ко всем новостям по RESTful API v2
     api.add_resource(our_resources.NewsResourceList, '/api/v2/news')
+    # прописываем доступ к отдельному пользователю по RESTful API v2
+    api.add_resource(user_resources.UserResource, '/api/v2/user/<int:user_id>')
+    # прописываем доступ ко всем пользователям по RESTful API v2
+    api.add_resource(user_resources.UsersResourceList, '/api/v2/users')
     app.run(port=5000, host='127.0.0.1')
