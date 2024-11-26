@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center">Уважаемый (ая) {{ params['name'] }}!</h1>
+<h2>Вы передали следующие данные:</h2>
+<h3>E-mail: {{ params['email'] }}</h3>
+<h3>Телефон: {{ params['phone'] }} </h3>
+<h4>Сообщение: {{ params['message'] }}</h4>
+<h5>Отправлено со страницы: {{ params['page'] }}</h5>
+{% endblock %}
+
+{% block footer %}
+<!--подвал-->
+<br>
+<footer class="bg-body-tertiary text-center text-lg-start">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2024 У нас новый пользователь
+    </div>
+    <!-- Copyright -->
+</footer>
+<!--подвал end-->
+{% endblock %}
