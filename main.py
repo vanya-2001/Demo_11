@@ -80,7 +80,7 @@ def user_loader(user_id):
 def index():
     param = {}
     param['text'] = 'Этот текст отобразится на главной странице'
-    param['title'] = 'Главная'
+    param['title'] = 'Флагман Консалтинг'
     return render_template('index.html', **param)
     # return """
     # <a href="/index">Главная</a> | <a href="/contacts">Контакты</a> | <a href="/img/1">Картинка 1</a>
@@ -140,7 +140,7 @@ def cookie_test():
 
 @app.route('/news')
 def news():
-    with open("news.json", "rt", encoding="utf-8") as f:
+    with open("Z_old/news.json", "rt", encoding="utf-8") as f:
         news_list = json.loads(f.read())
     print(news_list)
     return render_template('news.html', news=news_list, title='Новости')
@@ -390,7 +390,7 @@ def success():
 
 @app.route('/pets')
 def pets():
-    with open('pets.json', 'rt', encoding='utf-8') as f:
+    with open('Z_old/pets.json', 'rt', encoding='utf-8') as f:
         pets_info = json.load(f)
     print(pets_info)
     return render_template('pets.html', pets=pets_info, title='Питомцы')
@@ -418,7 +418,7 @@ def countdown():
 @app.route('/about')
 def about():
     params = {}
-    params['title'] = 'О нас'
+    params['title'] = 'Команда экспертов'
     params['text'] = 'Мы перспективная и динамично развивающаяся компания...'
     return render_template('about.html', **params)
 

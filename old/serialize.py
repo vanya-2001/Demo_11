@@ -22,7 +22,7 @@ pets_info = {
 #     json.dump(pets_info, f)
 
 # десериализация JSON
-with open('../pets.json', 'r') as f:
+with open('../Z_old/pets.json', 'r') as f:
      temp = json.load(f)
 
 print(temp)

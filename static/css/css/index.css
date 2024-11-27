@@ -1,0 +1,21 @@
+body {
+    background-color: #d0e0e2;
+    /*background: url("../../images/img/wallpaper.jpg") no-repeat center top fixed;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    padding-top: 56px;
+    padding-bottom: 56px;
+}
+
+#start-purchase-btn {
+    background-color:  #08413A;
+    border-color: #23364e;
+    color: #F8FAA7;
+}
+
+#start-purchase-link {
+    text-decoration: none;
+    color: #F8FAA7;
+}

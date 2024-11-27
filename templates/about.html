@@ -1,19 +1,94 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>О нас</h1>
-    <p>{{ text }}</p>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h2 class="mt-5">Команда экспертов</h2>
+            <ul>
+                <li>Глубокая экспертиза в фармацевтическом бизнесе</li>
+                <li>Кастомизация решения под особенности бизнеса заказчика</li>
+                <li>Профессиональное проведение тренингов с высоким уровнем вовлеченности участников</li>
+                <li>Проведение пост тренинговых сессий для закрепления навыко</li>
+                <li>Бесплатная диагностика навыков коммерческого персонала</li>
+            </ul>
+            <button id="start-purchase-btn" type="button" class="btn btn-lg">
+                    <a id="start-purchase-link" href="/contacts">
+                        Оставить заявку
+                    </a>
+            </button>
+
+        </div>
+        <div class="col-lg-9">
+            <div class="row">
+<!--                <div class="col-lg-4 col-md-6 mb-4">-->
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card h-100">
+                        <img class="card-img-top"
+                             src="{{ url_for('static', filename='images/expert_obid.jpg') }}"
+                             alt="Эксперт Дмитрий Обидин">
+
+                       <div class="card-body">
+                            <h4 class="card-title"> Дмитрий <b>Обидин</b>  </h4>
+                            <h5>Профессионал в области Training & Development,
+                                 <b>бизнес-тренер с 15-летним опытом проведения тренингов</b>
+                            </h5>
+                            <p class="card-text">
+                                Опыт работы в лидирующих международных компаниях – GlaxoSmithKline/Haleon
+                                (одна из крупнейших фармацевтических компаний в мире), Балтика/Carlsberg
+                                (лидер в секторе FMCG), British American Tobacco (одна из крупнейших табачных компаний в мире).
+                                Опыт управления бизнесом более 7 лет, в том числе опыт управления командой более 200 сотрудников.
+                            </p>
+                            <ul> <b>Области экспертизы:</b>
+                                <li>Построение эффективной системы обучения</li>
+                                <li>Комплексная оценка персонала</li>
+                                <li>Обучение лидеров</li>
+                                <li>Key Account Management</li>
+                                <li>Деловые игры</li>
+                            </ul>
+                            </p>
+                        </div>
+<!--                        <div class="card-footer text-center">-->
+<!--                            <button type="button" class="btn btn-outline-success">Задать вопрос</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+<!--                <div class="col-lg-4 col-md-6 mb-4">-->
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card h-100">
+                        <img class="card-img-top"
+                             src="{{ url_for('static', filename='images/expert_grig.jpg') }}"
+                             alt="Эксперт Анна Григорьева">
+
+                       <div class="card-body">
+                            <h4 class="card-title"> Анна <b>Григорьева</b>  </h4>
+                            <h5>Профессионал в области Training & Development,
+                                 <b>бизнес-тренер с 15-летним опытом проведения тренингов</b>
+                            </h5>
+                            <p class="card-text">
+                                Успешный опыт развития коммерческого персонала в лидирующих фармацевтических компаниях –
+                                Novartis Consumer Health, GlaxoSmithKline/Haleon
+                                Опыт лидирования инновационных проектов в области развития ключевых клиенто
+                            </p>
+                                <ul> <b>Области экспертизы:</b>
+                                    <li>КПостроение эффективной системы обучения</li>
+                                    <li>Комплексная оценка персонала</li>
+                                    <li>Обучение лидеров</li>
+                                    <li>Key Account Management</li>
+                                    <li>Net Revenue Management</li>
+                                    <li>Бизнес симуляции</li>
+                                    <li>Soft Skills</li>
+                                </ul>
+                            </p>
+                        </div>
+<!--                        <div class="card-footer text-center">-->
+<!--                            <button type="button" class="btn btn-outline-success">Задать вопрос</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
-{% block footer %}
-    <!--подвал-->
-    <br>
-    <footer class="bg-body-tertiary text-center text-lg-start">
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2024 С нами по свету
-        </div>
-        <!-- Copyright -->
-    </footer>
-    <!--подвал end-->
-{% endblock %}

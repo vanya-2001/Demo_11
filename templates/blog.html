@@ -2,7 +2,7 @@
 
 {% block content %}
 <br>
-<h1 class="bg-light p-3 text-center">Записи нашего блога</h1>
+<h1 class="bg-light p-3 text-center">Отзывы участников тренингов</h1>
 {% for item in news %}
 <div class="col border rounded">
     <h2>{{ item.title }}</h2>
@@ -11,7 +11,7 @@
     </div>
     <div>
         Автор: {{ item.user.name }},
-        Дата новости: {{ item.create_date.strftime('%d/%m/%Y в %H:%M') }}
+        Дата отзыва о тренинге: {{ item.create_date.strftime('%d/%m/%Y в %H:%M') }}
     </div><br>
     {% if current_user.is_authenticated and current_user == item.user %}
     <div>
