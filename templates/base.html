@@ -61,9 +61,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                        <li>
-                            <a class="dropdown-item" href="users/profile.html">Профиль</a>
-                        </li>
+
                         {% if current_user.is_authenticated %}
                         <li><a class="dropdown-item" href="/add_news">Оставить отзыв</a></li>
                         {% else %}
