@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<br>
-<h1 class="bg-light p-3 text-center">Отзывы участников тренингов</h1>
-{% for item in news %}
+    <div class="container">
+        <h2 class="mt-5"></h2>
+        <h2 class="text-center">Отзывы участников тренингов</h2>
+<!--        <div class="row">-->
+            <div class="col-lg-12">
+            {% for item in news %}
 <div class="col border rounded">
     <h2>{{ item.title }}</h2>
     <div>
@@ -25,17 +28,13 @@
 {% if current_user.is_authenticated %}
 <a href="/add" class="btn btn-secondary">Добавить отзыв</a>
 {% endif %}
+
+            <div>
+
+
+        </div>
+    </div></div>
+
+
 {% endblock %}
 
-{% block footer %}
-<!--подвал-->
-<br>
-<footer class="bg-body-tertiary text-center text-lg-start">
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2024 С нами по свету
-    </div>
-    <!-- Copyright -->
-</footer>
-<!--подвал end-->
-{% endblock %}

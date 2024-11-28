@@ -34,7 +34,7 @@ api = Api(app)  # регистрация нашего микросервиса
 login_manager = LoginManager()
 login_manager.init_app(app)  # привязали менеджер авторизации к приложению
 
-app.config['SECRET_KEY'] = 'too_short_key'
+app.config['SECRET_KEY'] = 'Holy guacamole! You should check in on some of those fields below'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
 
@@ -138,49 +138,6 @@ def cookie_test():
     return res
 
 
-@app.route('/news')
-def news():
-    with open("Z_old/news.json", "rt", encoding="utf-8") as f:
-        news_list = json.loads(f.read())
-    print(news_list)
-    return render_template('news.html', news=news_list, title='Новости')
-
-
-@app.route('/weather', methods=['GET', 'POST'])
-def weather():
-    if request.method == 'GET':
-        return render_template('weather.html', title='Погода', form=None)
-    elif request.method == 'POST':
-        # читаем
-        config.read('settings.ini')
-        city = request.form['city']
-        if len(city) < 2:
-            flash('Город не введен или введён не полностью')
-            return redirect(request.url)
-        key = config['Weather']['key']
-
-        res = requests.get('http://api.openweathermap.org/data/2.5/find',
-                           params={'q': city,
-                                   'type': 'like',
-                                   'units': 'metric',
-                                   'APPID': key})
-        data = res.json()
-        if len(data['list']) == 0:
-            flash('Город введён неверно!')
-            return redirect(request.url)
-        temp = data['list'][0]['main']
-
-        params = {}  # пустой словарь для передачи параметров в render weather.html
-        params['temper'] = temp['temp']
-        params['feel'] = temp['feels_like']
-        params['press'] = temp['pressure']
-        params['humid'] = temp['humidity']
-
-        return render_template('weather.html',
-                               title=f'Погода в городе {city}',
-                               form=request.form, params=params)
-
-
 # тестируем наш Api
 @app.route('/apitest')
 def api_test():
@@ -264,7 +221,7 @@ def add_news():
         db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/blog')
-    return render_template('add_news.html', title='Добавление новости',
+    return render_template('add_news.html', title='Добавить отзыв о тренинге',
                            form=form)
 
 
@@ -297,7 +254,7 @@ def edit_news(id):
             return redirect('/blog')
         else:
             abort(404)
-    return render_template('add_news.html', title='Редактирование новости',
+    return render_template('add_news.html', title='Отредактировать отзыв',
                            form=form)
 
 
@@ -385,34 +342,8 @@ def upload_file():
 @app.route('/success')
 @login_required
 def success():
-    return 'Успех'
+    return 'Успешно'
 
-
-@app.route('/pets')
-def pets():
-    with open('Z_old/pets.json', 'rt', encoding='utf-8') as f:
-        pets_info = json.load(f)
-    print(pets_info)
-    return render_template('pets.html', pets=pets_info, title='Питомцы')
-
-
-@app.route('/queue')
-def queue():
-    return render_template('queue.html', title='Очередь на медосмотр')
-
-
-@app.route('/odd_even/', defaults={'num': 0})
-@app.route('/odd_even/<int:num>')
-def odd_even(num):
-    return render_template('index.html', num=num, title='Чётное или нечётное')
-
-
-@app.route('/countdown')
-def countdown():
-    cl = ['Старт']
-    cl += [str(x) for x in reversed(range(11))]
-    cl.append('Финиш')
-    return '<br>'.join(cl)
 
 
 @app.route('/about')
@@ -465,14 +396,6 @@ def show_img(num):
                 """
 
 
-# http://localhost:5000/two-params/Victor/12
-@app.route('/two-params/<username>/<int:number>')
-def two_params_func(username, number):
-    param = 100 + number
-    return f"""
-    <h1>Пользователь: {username}</h1>
-    <h2>Номер в системе: {param}</h2>
-    """
 
 
 # Методы:
@@ -481,13 +404,6 @@ def two_params_func(username, number):
 # PUT - заменяет текущие данные на сервере данными запроса
 # PATCH - частичная замена данных на сервере
 # DELETE - удаляет указанные данные
-@app.route('/form_sample', methods=['POST', 'GET'])
-def form_sample():
-    if request.method == 'GET':
-        return render_template('form_sample.html', title='Заполните форму', form='None')
-    elif request.method == 'POST':
-        return render_template('form_sample.html', title='Ваши данные', form=request.form)
-
 
 # res = cur.execute("""select * from users
 #                   where id > 1 and email not like(%1%)""")

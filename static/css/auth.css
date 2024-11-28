@@ -5329,17 +5329,17 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+    color: #df0202;
+    background-color: #fff69f;
+    border-color: #df0202;
 }
 
 .alert-danger hr {
-    border-top-color: #f1b0b7;
+    border-top-color: #fff69f;
 }
 
 .alert-danger .alert-link {
-    color: #491217;
+    color: #df0202;
 }
 
 .alert-light {

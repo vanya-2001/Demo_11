@@ -12,16 +12,19 @@ main {
     float: none;
     margin: 0 auto;
 }
-
-p {
-    margin-top: 20px;
+.nav_flag {
+  background-color: #08413A;
 }
 
-p::first-letter {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: brown;
-}
+/*p {*/
+/*    margin-top: 20px;*/
+/*}*/
+
+/*p::first-letter {*/
+/*    font-size: 1.5rem;*/
+/*    font-weight: bold;*/
+/*    color: brown;*/
+/*}*/
 
 .error {
     color: red;
@@ -31,8 +34,8 @@ form.login-form {
     margin-left: auto;
     margin-right: auto;
     max-width: 600px;
-    background-color: #efefef;
-    border: 1px solid gray;
+    background-color: #d4dada;
+    border: 1px solid #08413A;
     border-radius: 5px;
     padding: 15px;
 }
@@ -41,8 +44,8 @@ form.mail-form {
     margin-left: auto;
     margin-right: auto;
     max-width: 600px;
-    background-color: #efefef;
-    border: 1px solid gray;
+    background-color: #d4dada;
+    border: 1px solid #08413A;
     border-radius: 5px;
     padding: 15px;
 }
@@ -73,4 +76,24 @@ form.mail-form {
 /* модификатор для отображения */
 .go-top--show {
     display: block;
+}
+#start-purchase-btn {
+    background-color:  #08413A;
+    border-color: #23364e;
+    color: #F8FAA7;
+}
+
+#start-purchase-link {
+    text-decoration: none;
+    color: #F8FAA7;
+}
+body {
+    background-color: #def1f4;
+    /*background: url("../../images/img/wallpaper.jpg") no-repeat center top fixed;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    padding-top: 56px;
+    padding-bottom: 56px;
 }

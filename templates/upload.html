@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if not form %}
-    <h1 class="text-center">Загрузка файла</h1>
+
+    <div class="container">
+        {% if not form %}
+        <h2 class="mt-5"></h2>
+        <h2 class="text-center">Загрузка файла</h2>
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="alert alert-danger" role="alert">
@@ -22,17 +26,6 @@
     {% else %}
     <h1 class="text-center">Файл загружен</h1>
     {% endif %}
+        </div>
 {% endblock %}
 
-{% block footer %}
-    <!--подвал-->
-    <br>
-    <footer class="bg-body-tertiary text-center text-lg-start">
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2024 С нами по свету
-        </div>
-        <!-- Copyright -->
-    </footer>
-    <!--подвал end-->
-{% endblock %}

@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="text-center">Карта, адрес, фото, телефон.</h1>
-    <h1 class="text-center">Напишите нам</h1>
-<form action="" class="mail-form" method="post" novalidate>
+<div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="mt-5"></h2>
+                <h2 class="text-center">Напишите нам</h2>
+                <form action="" class="mail-form" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>
         <b>{{ form.username.label }}</b>:
@@ -34,18 +37,32 @@
         {% endfor %}
     </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+
 </form>
+
+
+
+            </div>
+            <div class="col-lg-6">
+                <h2 class="mt-5"></h2>
+                <p>
+                    <img src="{{ url_for('static', filename='images/experts.png') }}" alt="Команда экспертов">
+                </p>
+                <p>+7 963 303 04 48<br>
+                    flagman-consulting@outlook.com<br>
+                <ol>
+                    <li>Оставьте заявку на консультацию - знакомство</li>
+                    <li>Определите свой запрос по направлениям:• Тренинги • Оценка
+• Консалтинг</li>
+                    <li>Получите коммерческое предложение и примите решение</li>
+                    <li>Заключаем договор и согласуем план реализации</li>
+                    <li>Реализуем проект и делимся обратной связью</li>
+                </ol>
+
+            </div>
+        </div>
+</div>
+
+
 {% endblock %}
 
-{% block footer %}
-    <!--подвал-->
-    <br>
-    <footer class="bg-body-tertiary text-center text-lg-start">
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2024 С нами по свету
-        </div>
-        <!-- Copyright -->
-    </footer>
-    <!--подвал end-->
-{% endblock %}

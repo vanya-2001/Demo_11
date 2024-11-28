@@ -9,13 +9,4 @@ body {
     padding-bottom: 56px;
 }
 
-#start-purchase-btn {
-    background-color:  #08413A;
-    border-color: #23364e;
-    color: #F8FAA7;
-}
 
-#start-purchase-link {
-    text-decoration: none;
-    color: #F8FAA7;
-}
