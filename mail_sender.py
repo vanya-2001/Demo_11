@@ -38,29 +38,36 @@ def send_mail(email, subject, text):
     server.send_message(msg)
     server.quit()
     return True
+    # список реальных адресов
+ mail_list = ['vanya2001-g@yandex.ru', '9367121V2001@gmail.com']
+count = 0  # глобальный счётчик писем
+send_mail(mail_list[count], 'Проверка', message)
+
+message = """
+Это проверка отправки
+почты моим скриптом.
+"""
+__name__ == '__main__':
+
+    message = """
+    Это проверка отправки
+    почты моим скриптом.
+    """
+
+    # список реальных адресов
+    mail_list = ['vanya2001-g@yandex.ru', '9367121V2001@gmail.com']
+
+    count = 0  # глобальный счётчик писем
 
 
-# if __name__ == '__main__':
-#
-#     message = """
-#     Это проверка отправки
-#     почты моим скриптом.
-#     """
-#
-#     # список реальных адресов
-#     mail_list = ['a@b.ru', 'b@c.ru']
-#
-#     count = 0  # глобальный счётчик писем
-#
-#
-#     def mail_task():
-#         global count
-#         send_mail(mail_list[count], 'Проверка', message)
-#         count += 1
-#
-#
-#     while count < len(mail_list):
-#         schedule.every(2).seconds.do(mail_task)
-#         time.sleep(1)  # если нужна доп. задержка
-#
-#     print('Рассылка завершена')
+    # # def mail_task():
+    # #     global count
+    #     send_mail(mail_list[count], 'Проверка', message)
+    #     count += 1
+    #
+    #
+    # # while count < len(mail_list):
+    # #     schedule.every(2).seconds.do(mail_task)
+    # #     time.sleep(1)  # если нужна доп. задержка
+
+    print('Рассылка завершена')

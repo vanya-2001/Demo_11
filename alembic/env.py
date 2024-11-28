@@ -10,11 +10,12 @@ from data.db_session import SqlAlchemyBase
 import data.__all_models
 
 # указываем полный путь к проекту
-sys.path.insert(0, 'C:\\Users\\teacher\\PycharmProjects\\Demography')
+sys.path.insert(0, 'C:\\Users\\TBG\\PycharmProjects\\Demo_11_14')
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

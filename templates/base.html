@@ -63,14 +63,14 @@
 
 
                         {% if current_user.is_authenticated %}
-                        <li><a class="dropdown-item" href="/add_news">Оставить отзыв</a></li>
+                        <li><a class="dropdown-item" href="/blog">Оставить отзыв</a></li>
                         {% else %}
                         <li> <a class="dropdown-item" href="/register">Регистрация</a> </li>
                         {% endif %}
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Админ-панель</a></li>
+                        <li><a class="dropdown-item" href="/admin">Админ-панель</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
